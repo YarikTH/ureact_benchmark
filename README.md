@@ -12,6 +12,12 @@ Libraries to compare:
 * [tower120/reactive](https://github.com/tower120/reactive)
 * [cpp-react](https://github.com/edvorg/cpp-react)
 * [REACT-CPP](https://github.com/CopernicaMarketingSoftware/REACT-CPP)
+* [ldionne/react](https://github.com/ldionne/react)
+
+Additional foreing language libraries to see the contepts and features:
+
+* https://github.com/IgorBuchelnikov/ObservableComputations
+* https://reactjs.org/
 
 It's not quite clear how to compare and benchmark them.
 
