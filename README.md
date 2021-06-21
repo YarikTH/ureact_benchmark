@@ -13,6 +13,7 @@ Libraries to compare:
 * [cpp-react](https://github.com/edvorg/cpp-react)
 * [REACT-CPP](https://github.com/CopernicaMarketingSoftware/REACT-CPP)
 * [ldionne/react](https://github.com/ldionne/react)
+* [TensorFlow](https://github.com/tensorflow/tensorflow)
 
 Additional foreing language libraries to see the contepts and features:
 
