@@ -57,7 +57,7 @@ add_library(CppReact::legacy1 ALIAS CppReactLegacy1)
 # observable
 add_library(observable INTERFACE)
 target_include_directories(observable INTERFACE ${CMAKE_CURRENT_LIST_DIR}/observable/observable/include)
-target_compile_features(observable INTERFACE cxx_std_11)
+target_compile_features(observable INTERFACE cxx_std_14)
 add_library(observable::observable ALIAS observable)
 
 # cpp-react
@@ -69,7 +69,7 @@ add_library(cpp::react ALIAS cpp-react)
 # reactive
 add_library(reactive INTERFACE)
 target_include_directories(reactive INTERFACE ${CMAKE_CURRENT_LIST_DIR}/reactive/src)
-target_compile_features(reactive INTERFACE cxx_std_11)
+target_compile_features(reactive INTERFACE cxx_std_17)
 add_library(reactive::reactive ALIAS reactive)
 
 # react
