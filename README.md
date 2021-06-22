@@ -11,11 +11,11 @@ Libraries to compare:
 * [DSPatch](https://github.com/cross-platform/dspatch)
 * [tower120/reactive](https://github.com/tower120/reactive)
 * [cpp-react](https://github.com/edvorg/cpp-react)
-* [REACT-CPP](https://github.com/CopernicaMarketingSoftware/REACT-CPP)
+* [REACT-CPP](https://github.com/CopernicaMarketingSoftware/REACT-CPP) irrelevant
 * [ldionne/react](https://github.com/ldionne/react)
-* [TensorFlow](https://github.com/tensorflow/tensorflow)
+* [TensorFlow](https://github.com/tensorflow/tensorflow) hard to build
 
-Additional foreing language libraries to see the contepts and features:
+Additional forming language libraries to see the contents and features:
 
 * https://github.com/IgorBuchelnikov/ObservableComputations
 * https://reactjs.org/
