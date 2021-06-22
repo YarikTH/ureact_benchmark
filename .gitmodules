@@ -34,3 +34,6 @@
 [submodule "libs/tensorflow"]
 	path = libs/tensorflow
 	url = https://github.com/tensorflow/tensorflow
+[submodule "libs/doctest"]
+	path = libs/doctest
+	url = ../../onqtam/doctest.git

@@ -1,6 +1,9 @@
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Enable testing of the benchmark library." FORCE)
 add_subdirectory(benchmark)
 
+# doctest
+add_subdirectory(doctest)
+
 # ureact
 add_subdirectory(ureact)
 
