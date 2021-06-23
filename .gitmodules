@@ -1,39 +1,43 @@
 [submodule "libs/benchmark"]
 	path = libs/benchmark
-	url = ../../google/benchmark.git
-[submodule "libs/ureact"]
-	path = libs/ureact
-	url = ../ureact.git
-[submodule "libs/usingstdcpp2019"]
-	path = libs/usingstdcpp2019
-	url = ../../joaquintides/usingstdcpp2019.git
-[submodule "libs/cpp.react_legacy1"]
-	path = libs/cpp.react_legacy1
-	url = ../cpp.react.git
-[submodule "libs/cpp.react_master"]
-	path = libs/cpp.react_master
-	url = ../cpp.react.git
+	url = https://github.com/google/benchmark.git
+[submodule "libs/doctest"]
+	path = libs/doctest
+	url = https://github.com/onqtam/doctest.git
 [submodule "libs/tbb"]
 	path = libs/tbb
-	url = ../../wjakob/tbb.git
+	url = https://github.com/YarikTH/tbb.git
+
+
+[submodule "libs/ureact"]
+	path = libs/ureact
+	url = https://github.com/YarikTH/ureact.git
+[submodule "libs/usingstdcpp2019"]
+	path = libs/usingstdcpp2019
+	url = https://github.com/YarikTH/usingstdcpp2019.git
+[submodule "libs/cpp.react_legacy1"]
+	path = libs/cpp.react_legacy1
+	url = https://github.com/YarikTH/cpp.react.git
+[submodule "libs/cpp.react_master"]
+	path = libs/cpp.react_master
+	url = https://github.com/YarikTH/cpp.react.git
 [submodule "libs/observable"]
 	path = libs/observable
-	url = https://github.com/ddinu/observable
-[submodule "libs/RxCpp"]
-	path = libs/RxCpp
-	url = https://github.com/ReactiveX/RxCpp
+	url = https://github.com/YarikTH/observable
 [submodule "libs/reactive"]
 	path = libs/reactive
-	url = https://github.com/tower120/reactive
+	url = https://github.com/YarikTH/reactive
 [submodule "libs/cpp-react"]
 	path = libs/cpp-react
 	url = https://github.com/YarikTH/cpp-react
+
+
+[submodule "libs/RxCpp"]
+	path = libs/RxCpp
+	url = https://github.com/ReactiveX/RxCpp
 [submodule "libs/react"]
 	path = libs/react
 	url = https://github.com/ldionne/react
 [submodule "libs/tensorflow"]
 	path = libs/tensorflow
 	url = https://github.com/tensorflow/tensorflow
-[submodule "libs/doctest"]
-	path = libs/doctest
-	url = ../../onqtam/doctest.git
