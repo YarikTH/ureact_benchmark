@@ -1,8 +1,8 @@
 function(add_react_test name library)
     add_executable(${name} ${name}.cpp)
-    
+
     target_link_libraries(${name} PRIVATE doctest::doctest ${library})
-    
+
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
