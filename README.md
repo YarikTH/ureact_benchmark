@@ -1,4 +1,7 @@
-# ureact_benchmark
+# µReact benchmark
+
+<p align="center"><img src="support/data/logo/do_react_cpp.png"></p>
+
 Feature comparison and benchmarking of reactive libraries for c++
 
 Libraries to compare:
