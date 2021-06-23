@@ -1,4 +1,4 @@
-# cpp_react_benchmark
+# ureact_benchmark
 Feature comparison and benchmarking of reactive libraries for c++
 
 Libraries to compare:
