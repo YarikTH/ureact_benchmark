@@ -2,6 +2,10 @@
 
 <p align="center"><img src="support/data/logo/do_react_cpp.png"></p>
 
+[![Ubuntu](https://github.com/YarikTH/ureact_benchmark/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/YarikTH/ureact_benchmark/actions/workflows/ubuntu.yml)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/YarikTH/ureact_benchmark/main/LICENSE.MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](.)
+
 Feature comparison and benchmarking of reactive libraries for c++
 
 Libraries to compare:
