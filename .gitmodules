@@ -27,7 +27,7 @@
 	url = https://github.com/tower120/reactive
 [submodule "libs/cpp-react"]
 	path = libs/cpp-react
-	url = https://github.com/edvorg/cpp-react
+	url = https://github.com/YarikTH/cpp-react
 [submodule "libs/react"]
 	path = libs/react
 	url = https://github.com/ldionne/react
