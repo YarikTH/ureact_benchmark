@@ -22,11 +22,13 @@ Libraries to compare:
 * [ldionne/react](https://github.com/ldionne/react)
 * [TensorFlow](https://github.com/tensorflow/tensorflow) hard to build
 
-Additional forming language libraries to see the contents and features:
+Additional foreign language libraries to see the contents and features:
 
 * https://github.com/IgorBuchelnikov/ObservableComputations
 * https://reactjs.org/
 * https://docs.racket-lang.org/frtime/
+* https://www.uwanttolearn.com/android/pull-vs-push-imperative-vs-reactive-reactive-programming-android-rxjava2-hell-part2/
+* http://jultika.oulu.fi/files/nbnfioulu-201511212160.pdf
 
 It's not quite clear how to compare and benchmark them.
 
