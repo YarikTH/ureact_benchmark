@@ -26,6 +26,7 @@ Additional forming language libraries to see the contents and features:
 
 * https://github.com/IgorBuchelnikov/ObservableComputations
 * https://reactjs.org/
+* https://docs.racket-lang.org/frtime/
 
 It's not quite clear how to compare and benchmark them.
 
