@@ -21,6 +21,8 @@ Libraries to compare:
 * [REACT-CPP](https://github.com/CopernicaMarketingSoftware/REACT-CPP) irrelevant
 * [ldionne/react](https://github.com/ldionne/react)
 * [TensorFlow](https://github.com/tensorflow/tensorflow) hard to build
+* [zug](https://github.com/arximboldi/zug)
+* [lager](https://github.com/arximboldi/lager)
 
 Additional foreign language libraries to see the contents and features:
 
