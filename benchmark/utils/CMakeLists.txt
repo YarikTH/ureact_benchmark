@@ -1,0 +1,3 @@
+add_library(ureact_benchmark_utils INTERFACE)
+add_library(ureact_benchmark::utils ALIAS ureact_benchmark_utils)
+target_include_directories(ureact_benchmark_utils INTERFACE ${CMAKE_CURRENT_LIST_DIR})
