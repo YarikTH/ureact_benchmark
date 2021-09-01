@@ -3,7 +3,9 @@ add_executable(ureact_benchmark_life
                ureact.cpp
                cpp_react_legacy1.cpp
                cpp_react_master.cpp
-               # urp.cpp
+               reactive.cpp
+               #observable.cpp
+               #urp.cpp
                )
 
 target_link_libraries(ureact_benchmark_life PRIVATE benchmark::benchmark ureact_benchmark::utils)
@@ -11,6 +13,8 @@ target_link_libraries(ureact_benchmark_life PRIVATE
                       ureact::ureact
                       CppReact::legacy1
                       CppReact::master
+                      reactive::reactive
+                      #observable::observable
                       #urp::urp
                       )
 

@@ -1,9 +1,10 @@
 #include <benchmark/benchmark.h>
-#include <urp.hpp>
+#include <reactive/non_thread_safe/ObservableProperty.h>
+#include <reactive/non_thread_safe/ReactiveProperty.h>
 
 #include "macros.hpp"
 
-using namespace usingstdcpp2019;
+using namespace reactive::non_thread_safe;
 
 class GameBoard
 {
@@ -21,7 +22,7 @@ public:
             m_oldBoard.emplace_back( values[i] );
         }
 
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> urp::value<bool>& {
+        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> ObservableProperty<bool>& {
             const auto posWrapped = wrapPos( pos );
             const int i = posToFieldId( posWrapped );
             return m_oldBoard[i];
@@ -61,7 +62,7 @@ public:
             auto& bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
             auto& b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
             auto& br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
-            m_newBoard.emplace_back( F( updateField ), self, tl, t, tr, l, r, bl, b, br );
+            m_newBoard.emplace_back( false ).set( updateField, self, tl, t, tr, l, r, bl, b, br );
             // clang-format on
         }
     }
@@ -69,12 +70,14 @@ public:
     void update()
     {
         m_recalculated = 0;
+
         const int fields = m_width * m_height;
+
         std::vector<bool> tempBoard;
         tempBoard.resize( fields );
         for( int i = 0; i < fields; ++i )
         {
-            tempBoard[i] = m_newBoard[i].get();
+            tempBoard[i] = m_newBoard[i].getCopy();
         }
 
         for( int i = 0; i < fields; ++i )
@@ -111,23 +114,10 @@ private:
         return pos;
     }
 
-    using F = std::function<bool(
-        bool self, bool tl, bool t, bool tr, bool l, bool r, bool bl, bool b, bool br )>;
-
     int m_width{};
     int m_height{};
-    std::vector<urp::value<bool>> m_oldBoard{};
-    std::vector<urp::function<F,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>,
-        urp::value<bool>>>
-        m_newBoard{};
+    std::vector<ObservableProperty<bool>> m_oldBoard{};
+    std::vector<ReactiveProperty<bool>> m_newBoard{};
     int m_recalculated = -1;
 };
 
@@ -163,7 +153,7 @@ constexpr int WIDTH = 20;
 constexpr int HEIGHT = 20;
 
 
-static void ureact_board_construction( benchmark::State& state )
+static void reactive_board_construction( benchmark::State& state )
 {
     for( auto it : state )
     {
@@ -171,10 +161,11 @@ static void ureact_board_construction( benchmark::State& state )
         benchmark::DoNotOptimize( board );
     }
 }
-BENCHMARK( ureact_board_construction )->Name( FULL_BENCHMARK_NAME( ureact_board_construction ) );
+BENCHMARK( reactive_board_construction )
+    ->Name( FULL_BENCHMARK_NAME( reactive_board_construction ) );
 
 
-static void ureact_emulation( benchmark::State& state )
+static void reactive_emulation( benchmark::State& state )
 {
     for( auto it : state )
     {
@@ -195,4 +186,4 @@ static void ureact_emulation( benchmark::State& state )
         assert( loops == 602 );
     }
 }
-BENCHMARK( ureact_emulation )->Name( FULL_BENCHMARK_NAME( ureact_emulation ) );
+BENCHMARK( reactive_emulation )->Name( FULL_BENCHMARK_NAME( reactive_emulation ) );
