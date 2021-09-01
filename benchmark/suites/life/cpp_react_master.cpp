@@ -1,12 +1,16 @@
 #include <benchmark/benchmark.h>
-#include <ureact/ureact.hpp>
+// For some unknown reason method State::Value() is protected. So we need a
+// "public morozov" hack to operate it
+#define protected public
+#include <react/group.h>
+#include <react/state.h>
 
 #include "macros.hpp"
 
 class GameBoard
 {
 public:
-    GameBoard( ureact::context& ctx, int width, int height, const std::vector<bool>& values )
+    GameBoard( react::Group& ctx, int width, int height, const std::vector<bool>& values )
         : m_ctx( ctx )
         , m_width( width )
         , m_height( height )
@@ -17,10 +21,10 @@ public:
         m_oldBoard.reserve( fields );
         for( int i = 0; i < fields; ++i )
         {
-            m_oldBoard.push_back( ctx.make_value( values[i] ) );
+            m_oldBoard.push_back( react::StateVar<bool>::Create( ctx, values[i] ) );
         }
 
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> ureact::value<bool>&
+        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> react::StateVar<bool>&
         {
             const auto posWrapped = wrapPos( pos );
             const int i = posToFieldId( posWrapped );
@@ -61,7 +65,8 @@ public:
             auto& bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
             auto& b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
             auto& br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
-            m_newBoard[i] = with(self, tl, t, tr, l, r, bl, b, br) | updateField;
+
+            m_newBoard[i] = react::State<bool>::Create(updateField, self, tl, t, tr, l, r, bl, b, br);
             // clang-format on
         }
     }
@@ -69,11 +74,11 @@ public:
     void update()
     {
         m_recalculated = 0;
-        m_ctx.do_transaction( [&]() {
+        m_ctx.DoTransaction( [&]() {
             const int fields = m_width * m_height;
             for( int i = 0; i < fields; ++i )
             {
-                m_oldBoard[i] <<= m_newBoard[i].get();
+                m_oldBoard[i].Set( m_newBoard[i].Value() );
             }
         } );
     }
@@ -106,11 +111,11 @@ private:
         return pos;
     }
 
-    ureact::context& m_ctx;
+    react::Group& m_ctx;
     int m_width{};
     int m_height{};
-    std::vector<ureact::value<bool>> m_oldBoard{};
-    std::vector<ureact::function<bool>> m_newBoard{};
+    std::vector<react::StateVar<bool>> m_oldBoard{};
+    std::vector<react::State<bool>> m_newBoard{};
     int m_recalculated = -1;
 };
 
@@ -146,24 +151,25 @@ constexpr int WIDTH = 20;
 constexpr int HEIGHT = 20;
 
 
-static void ureact_board_construction( benchmark::State& state )
+static void cpp_react_master_board_construction( benchmark::State& state )
 {
     for( auto it : state )
     {
-        ureact::context ctx;
+        react::Group ctx;
 
         GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
         benchmark::DoNotOptimize( board );
     }
 }
-BENCHMARK( ureact_board_construction )->Name( FULL_BENCHMARK_NAME( ureact_board_construction ) );
+BENCHMARK( cpp_react_master_board_construction )
+    ->Name( FULL_BENCHMARK_NAME( cpp_react_master_board_construction ) );
 
 
-static void ureact_emulation( benchmark::State& state )
+static void cpp_react_master_emulation( benchmark::State& state )
 {
     for( auto it : state )
     {
-        ureact::context ctx;
+        react::Group ctx;
 
         GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
 
@@ -182,4 +188,4 @@ static void ureact_emulation( benchmark::State& state )
         assert( loops == 602 );
     }
 }
-BENCHMARK( ureact_emulation )->Name( FULL_BENCHMARK_NAME( ureact_emulation ) );
+BENCHMARK( cpp_react_master_emulation )->Name( FULL_BENCHMARK_NAME( cpp_react_master_emulation ) );

@@ -1,14 +1,15 @@
 #include <benchmark/benchmark.h>
-#include <ureact/ureact.hpp>
+#include <urp.hpp>
 
 #include "macros.hpp"
+
+using namespace usingstdcpp2019;
 
 class GameBoard
 {
 public:
-    GameBoard( ureact::context& ctx, int width, int height, const std::vector<bool>& values )
-        : m_ctx( ctx )
-        , m_width( width )
+    GameBoard( int width, int height, const std::vector<bool>& values )
+        : m_width( width )
         , m_height( height )
     {
         const int fields = width * height;
@@ -17,10 +18,10 @@ public:
         m_oldBoard.reserve( fields );
         for( int i = 0; i < fields; ++i )
         {
-            m_oldBoard.push_back( ctx.make_value( values[i] ) );
+            m_oldBoard.emplace_back( values[i] );
         }
 
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> ureact::value<bool>&
+        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> urp::value<bool>&
         {
             const auto posWrapped = wrapPos( pos );
             const int i = posToFieldId( posWrapped );
@@ -47,7 +48,7 @@ public:
             }
         };
 
-        m_newBoard.resize( fields );
+        m_newBoard.reserve( fields );
         for( int i = 0; i < fields; ++i )
         {
             // clang-format off
@@ -61,7 +62,7 @@ public:
             auto& bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
             auto& b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
             auto& br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
-            m_newBoard[i] = with(self, tl, t, tr, l, r, bl, b, br) | updateField;
+            m_newBoard.emplace_back( F( updateField ), self, tl, t, tr, l, r, bl, b, br );
             // clang-format on
         }
     }
@@ -69,13 +70,18 @@ public:
     void update()
     {
         m_recalculated = 0;
-        m_ctx.do_transaction( [&]() {
-            const int fields = m_width * m_height;
-            for( int i = 0; i < fields; ++i )
-            {
-                m_oldBoard[i] <<= m_newBoard[i].get();
-            }
-        } );
+        const int fields = m_width * m_height;
+        std::vector<bool> tempBoard;
+        tempBoard.resize( fields );
+        for( int i = 0; i < fields; ++i )
+        {
+            tempBoard[i] = m_newBoard[i].get();
+        }
+
+        for( int i = 0; i < fields; ++i )
+        {
+            m_oldBoard[i] = tempBoard[i];
+        }
     }
 
     [[nodiscard]] int recalculated() const
@@ -106,11 +112,23 @@ private:
         return pos;
     }
 
-    ureact::context& m_ctx;
+    using F = std::function<bool(
+        bool self, bool tl, bool t, bool tr, bool l, bool r, bool bl, bool b, bool br )>;
+
     int m_width{};
     int m_height{};
-    std::vector<ureact::value<bool>> m_oldBoard{};
-    std::vector<ureact::function<bool>> m_newBoard{};
+    std::vector<urp::value<bool>> m_oldBoard{};
+    std::vector<urp::function<F,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>,
+        urp::value<bool>>>
+        m_newBoard{};
     int m_recalculated = -1;
 };
 
@@ -150,9 +168,7 @@ static void ureact_board_construction( benchmark::State& state )
 {
     for( auto it : state )
     {
-        ureact::context ctx;
-
-        GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board( WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
         benchmark::DoNotOptimize( board );
     }
 }
@@ -163,9 +179,7 @@ static void ureact_emulation( benchmark::State& state )
 {
     for( auto it : state )
     {
-        ureact::context ctx;
-
-        GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board( WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
 
         bool skipUpdate = true;
 

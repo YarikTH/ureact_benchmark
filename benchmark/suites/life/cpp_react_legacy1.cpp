@@ -28,7 +28,8 @@ public:
             m_oldBoard.push_back( MakeVar<D>( values[i] ) );
         }
 
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) {
+        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> VarSignalT<bool>&
+        {
             const auto posWrapped = wrapPos( pos );
             const int i = posToFieldId( posWrapped );
             return m_oldBoard[i];
@@ -59,16 +60,16 @@ public:
         {
             // clang-format off
             auto self_pos = fieldIdToPos( i );
-            auto self = oldBoardFieldByPos( self_pos );
-            auto tl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second - 1 } );
-            auto t    = oldBoardFieldByPos( { self_pos.first,     self_pos.second - 1 } );
-            auto tr   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second - 1 } );
-            auto l    = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second     } );
-            auto r    = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second     } );
-            auto bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
-            auto b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
-            auto br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
-            m_newBoard[i] = MakeSignal<D>( With(self, tl, t, tr, l, r, bl, b, br), updateField );
+            auto& self = oldBoardFieldByPos( self_pos );
+            auto& tl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second - 1 } );
+            auto& t    = oldBoardFieldByPos( { self_pos.first,     self_pos.second - 1 } );
+            auto& tr   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second - 1 } );
+            auto& l    = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second     } );
+            auto& r    = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second     } );
+            auto& bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
+            auto& b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
+            auto& br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
+            m_newBoard[i] = With(self, tl, t, tr, l, r, bl, b, br) ->* updateField;
             // clang-format on
         }
     }
