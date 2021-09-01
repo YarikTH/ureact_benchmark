@@ -9,12 +9,12 @@ TEST_SUITE( "ureact" )
     {
         ureact::context ctx;
 
-        ureact::var_signal<int> b = ctx.make_var( 1 );
-        ureact::var_signal<int> c = ctx.make_var( 2 );
+        ureact::value<int> b = ctx.make_value( 1 );
+        ureact::value<int> c = ctx.make_value( 2 );
         ureact::signal<int> a = b + c;
 
-        CHECK( a.value() == 3 );
+        CHECK( a.get() == 3 );
         b <<= 10;
-        CHECK( a.value() == 12 );
+        CHECK( a.get() == 12 );
     }
 }
