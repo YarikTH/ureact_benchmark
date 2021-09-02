@@ -1,5 +1,6 @@
 add_executable(ureact_benchmark_life
                main.cpp
+               baseline.cpp
                ureact.cpp
                ureact_std_algo.cpp
                cpp_react_legacy1.cpp
