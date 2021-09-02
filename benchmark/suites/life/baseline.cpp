@@ -12,24 +12,33 @@ public:
         const int fields = width * height;
         assert( values.size() == size_t( fields ) );
 
-        m_oldBoard.reserve( fields );
+        m_oldBoard.resize( fields );
+        m_newBoard.resize( fields );
         for( int i = 0; i < fields; ++i )
         {
-            m_oldBoard.push_back( values[i] );
+            m_oldBoard[i] = m_newBoard[i] = values[i];
         }
 
-        m_newBoard = m_oldBoard;
+        m_neighbours.resize( fields );
+        for( int i = 0; i < fields; ++i )
+        {
+            // clang-format off
+            const auto self_pos = fieldIdToPos( i );
+            m_neighbours[i].tl = posToFieldIdWrapped( { self_pos.first - 1, self_pos.second - 1 } );
+            m_neighbours[i].t  = posToFieldIdWrapped( { self_pos.first,     self_pos.second - 1 } );
+            m_neighbours[i].tr = posToFieldIdWrapped( { self_pos.first + 1, self_pos.second - 1 } );
+            m_neighbours[i].l  = posToFieldIdWrapped( { self_pos.first - 1, self_pos.second     } );
+            m_neighbours[i].r  = posToFieldIdWrapped( { self_pos.first + 1, self_pos.second     } );
+            m_neighbours[i].bl = posToFieldIdWrapped( { self_pos.first - 1, self_pos.second + 1 } );
+            m_neighbours[i].b  = posToFieldIdWrapped( { self_pos.first,     self_pos.second + 1 } );
+            m_neighbours[i].br = posToFieldIdWrapped( { self_pos.first + 1, self_pos.second + 1 } );
+            // clang-format on
+        }
     }
 
     void update()
     {
-        m_oldBoard = m_newBoard;
-
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> bool {
-            const auto posWrapped = wrapPos( pos );
-            const int i = posToFieldId( posWrapped );
-            return m_oldBoard[i];
-        };
+        m_oldBoard.swap( m_newBoard );
 
         // clang-format off
         auto updateField = []( bool self, bool tl, bool t, bool tr, bool l, bool r, bool bl, bool b, bool br )
@@ -55,16 +64,16 @@ public:
         {
             // calculate new board using values form old board
             // clang-format off
-            const auto self_pos = fieldIdToPos( i );
-            const bool self = oldBoardFieldByPos( self_pos );
-            const bool tl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second - 1 } );
-            const bool t    = oldBoardFieldByPos( { self_pos.first,     self_pos.second - 1 } );
-            const bool tr   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second - 1 } );
-            const bool l    = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second     } );
-            const bool r    = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second     } );
-            const bool bl   = oldBoardFieldByPos( { self_pos.first - 1, self_pos.second + 1 } );
-            const bool b    = oldBoardFieldByPos( { self_pos.first,     self_pos.second + 1 } );
-            const bool br   = oldBoardFieldByPos( { self_pos.first + 1, self_pos.second + 1 } );
+            const auto& neighbours = m_neighbours[i];
+            const bool self = m_oldBoard[i];
+            const bool tl   = m_oldBoard[neighbours.tl];
+            const bool t    = m_oldBoard[neighbours.t];
+            const bool tr   = m_oldBoard[neighbours.tr];
+            const bool l    = m_oldBoard[neighbours.l];
+            const bool r    = m_oldBoard[neighbours.r];
+            const bool bl   = m_oldBoard[neighbours.bl];
+            const bool b    = m_oldBoard[neighbours.b];
+            const bool br   = m_oldBoard[neighbours.br];
             m_newBoard[i] = updateField( self, tl, t, tr, l, r, bl, b, br );
             // clang-format on
         }
@@ -95,10 +104,21 @@ private:
         return pos;
     }
 
+    [[nodiscard]] int posToFieldIdWrapped( std::pair<int, int> pos ) const
+    {
+        return posToFieldId( wrapPos( pos ) );
+    }
+
+    struct Neighbours
+    {
+        int tl, t, tr, l, r, bl, b, br;
+    };
+
     int m_width{};
     int m_height{};
     std::vector<bool> m_oldBoard{};
     std::vector<bool> m_newBoard{};
+    std::vector<Neighbours> m_neighbours{};
     bool m_finished = false;
 };
 
