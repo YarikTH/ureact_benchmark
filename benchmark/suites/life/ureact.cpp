@@ -2,6 +2,10 @@
 #include <ureact/ureact.hpp>
 
 #include "macros.hpp"
+#include "stdfx.hpp"
+
+namespace
+{
 
 class GameBoard
 {
@@ -20,8 +24,7 @@ public:
             m_oldBoard.push_back( ctx.make_value( values[i] ) );
         }
 
-        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> ureact::value<bool>&
-        {
+        auto oldBoardFieldByPos = [&]( std::pair<int, int> pos ) -> ureact::value<bool>& {
             const auto posWrapped = wrapPos( pos );
             const int i = posToFieldId( posWrapped );
             return m_oldBoard[i];
@@ -114,58 +117,33 @@ private:
     int m_recalculated = -1;
 };
 
-#define _ false
-#define O true
 
-// clang-format off
-const std::vector<bool> INITIAL_BOARD_CONFIG = {
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,_,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,O,O,_,_,_,_,_,O,O,O,_,_,_,_,_,_,_,_,
-    _,_,O,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,O,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,O,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-};
-// clang-format on
-
-constexpr int WIDTH = 20;
-constexpr int HEIGHT = 20;
-
-
-static void ureact_board_construction( benchmark::State& state )
+void ureact_board_construction( benchmark::State& state )
 {
     for( auto it : state )
     {
         ureact::context ctx;
 
-        GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board( ctx,
+            board::INITIAL_BOARD_WIDTH,
+            board::INITIAL_BOARD_HEIGHT,
+            board::INITIAL_BOARD_CONFIG );
         benchmark::DoNotOptimize( board );
     }
 }
 BENCHMARK( ureact_board_construction )->Name( FULL_BENCHMARK_NAME( ureact_board_construction ) );
 
 
-static void ureact_emulation( benchmark::State& state )
+void ureact_emulation( benchmark::State& state )
 {
     for( auto it : state )
     {
         ureact::context ctx;
 
-        GameBoard board( ctx, WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board( ctx,
+            board::INITIAL_BOARD_WIDTH,
+            board::INITIAL_BOARD_HEIGHT,
+            board::INITIAL_BOARD_CONFIG );
 
         bool skipUpdate = true;
 
@@ -183,3 +161,5 @@ static void ureact_emulation( benchmark::State& state )
     }
 }
 BENCHMARK( ureact_emulation )->Name( FULL_BENCHMARK_NAME( ureact_emulation ) );
+
+} // namespace

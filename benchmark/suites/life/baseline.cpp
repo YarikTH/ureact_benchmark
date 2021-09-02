@@ -1,6 +1,10 @@
 #include <benchmark/benchmark.h>
 
 #include "macros.hpp"
+#include "stdfx.hpp"
+
+namespace
+{
 
 class GameBoard
 {
@@ -122,43 +126,12 @@ private:
     bool m_finished = false;
 };
 
-#define _ false
-#define O true
-
-// clang-format off
-const std::vector<bool> INITIAL_BOARD_CONFIG = {
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,_,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,O,O,_,_,_,_,_,O,O,O,_,_,_,_,_,_,_,_,
-    _,_,O,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,O,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,O,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,O,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,O,O,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-    _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,
-};
-// clang-format on
-
-constexpr int WIDTH = 20;
-constexpr int HEIGHT = 20;
-
-
-static void baseline_board_construction( benchmark::State& state )
+void baseline_board_construction( benchmark::State& state )
 {
     for( auto it : state )
     {
-        GameBoard board( WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board(
+            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
         benchmark::DoNotOptimize( board );
     }
 }
@@ -166,11 +139,12 @@ BENCHMARK( baseline_board_construction )
     ->Name( FULL_BENCHMARK_NAME( baseline_board_construction ) );
 
 
-static void baseline_emulation( benchmark::State& state )
+void baseline_emulation( benchmark::State& state )
 {
     for( auto it : state )
     {
-        GameBoard board( WIDTH, HEIGHT, INITIAL_BOARD_CONFIG );
+        GameBoard board(
+            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
 
         bool skipUpdate = true;
 
@@ -188,3 +162,5 @@ static void baseline_emulation( benchmark::State& state )
     }
 }
 BENCHMARK( baseline_emulation )->Name( FULL_BENCHMARK_NAME( baseline_emulation ) );
+
+} // namespace
