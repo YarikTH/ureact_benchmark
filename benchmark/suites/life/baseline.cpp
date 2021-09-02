@@ -126,20 +126,7 @@ private:
     bool m_finished = false;
 };
 
-void baseline_board_construction( benchmark::State& state )
-{
-    for( auto it : state )
-    {
-        GameBoard board(
-            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
-        benchmark::DoNotOptimize( board );
-    }
-}
-BENCHMARK( baseline_board_construction )
-    ->Name( FULL_BENCHMARK_NAME( baseline_board_construction ) );
-
-
-void baseline_emulation( benchmark::State& state )
+void baseline( benchmark::State& state )
 {
     for( auto it : state )
     {
@@ -161,6 +148,6 @@ void baseline_emulation( benchmark::State& state )
         assert( loops == 602 );
     }
 }
-BENCHMARK( baseline_emulation )->Name( FULL_BENCHMARK_NAME( baseline_emulation ) );
+BENCHMARK( baseline )->Name( FULL_BENCHMARK_NAME( baseline ) );
 
 } // namespace

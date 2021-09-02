@@ -124,20 +124,7 @@ private:
     int m_recalculated = -1;
 };
 
-void cpp_react_legacy1_board_construction( benchmark::State& state )
-{
-    for( auto it : state )
-    {
-        GameBoard board(
-            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
-        benchmark::DoNotOptimize( board );
-    }
-}
-BENCHMARK( cpp_react_legacy1_board_construction )
-    ->Name( FULL_BENCHMARK_NAME( cpp_react_legacy1_board_construction ) );
-
-
-void cpp_react_legacy1_emulation( benchmark::State& state )
+void cpp_react_legacy1( benchmark::State& state )
 {
     for( auto it : state )
     {
@@ -159,7 +146,6 @@ void cpp_react_legacy1_emulation( benchmark::State& state )
         assert( loops == 602 );
     }
 }
-BENCHMARK( cpp_react_legacy1_emulation )
-    ->Name( FULL_BENCHMARK_NAME( cpp_react_legacy1_emulation ) );
+BENCHMARK( cpp_react_legacy1 )->Name( FULL_BENCHMARK_NAME( cpp_react_legacy1 ) );
 
 } // namespace

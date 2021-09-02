@@ -135,21 +135,7 @@ private:
     int m_recalculated = -1;
 };
 
-
-void observable_board_construction( benchmark::State& state )
-{
-    for( auto it : state )
-    {
-        GameBoard board(
-            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
-        benchmark::DoNotOptimize( board );
-    }
-}
-BENCHMARK( observable_board_construction )
-    ->Name( FULL_BENCHMARK_NAME( observable_board_construction ) );
-
-
-void observable_emulation( benchmark::State& state )
+void observable( benchmark::State& state )
 {
     for( auto it : state )
     {
@@ -171,6 +157,6 @@ void observable_emulation( benchmark::State& state )
         assert( loops == 602 );
     }
 }
-BENCHMARK( observable_emulation )->Name( FULL_BENCHMARK_NAME( observable_emulation ) );
+BENCHMARK( observable )->Name( FULL_BENCHMARK_NAME( observable ) );
 
 } // namespace

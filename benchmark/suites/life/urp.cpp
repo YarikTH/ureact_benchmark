@@ -135,19 +135,6 @@ private:
     int m_recalculated = -1;
 };
 
-
-void urp_board_construction( benchmark::State& state )
-{
-    for( auto it : state )
-    {
-        GameBoard board(
-            board::INITIAL_BOARD_WIDTH, board::INITIAL_BOARD_HEIGHT, board::INITIAL_BOARD_CONFIG );
-        benchmark::DoNotOptimize( board );
-    }
-}
-BENCHMARK( urp_board_construction )->Name( FULL_BENCHMARK_NAME( urp_board_construction ) );
-
-
 void urp_emulation( benchmark::State& state )
 {
     for( auto it : state )

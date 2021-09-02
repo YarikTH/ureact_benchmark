@@ -117,23 +117,6 @@ private:
     int m_recalculated = -1;
 };
 
-
-void ureact_board_construction( benchmark::State& state )
-{
-    for( auto it : state )
-    {
-        ureact::context ctx;
-
-        GameBoard board( ctx,
-            board::INITIAL_BOARD_WIDTH,
-            board::INITIAL_BOARD_HEIGHT,
-            board::INITIAL_BOARD_CONFIG );
-        benchmark::DoNotOptimize( board );
-    }
-}
-BENCHMARK( ureact_board_construction )->Name( FULL_BENCHMARK_NAME( ureact_board_construction ) );
-
-
 void ureact_emulation( benchmark::State& state )
 {
     for( auto it : state )
