@@ -23,9 +23,12 @@ Libraries to compare:
 * [TensorFlow](https://github.com/tensorflow/tensorflow) hard to build
 * [zug](https://github.com/arximboldi/zug)
 * [lager](https://github.com/arximboldi/lager)
+* [sodium](https://github.com/SodiumFRP/sodium)
+
 
 Additional foreign language libraries to see the contents and features:
 
+* https://github.com/gelisam/frp-zoo (comparasion of haskel reactive libraries and their features. Generally like this repo tried to do)
 * https://github.com/IgorBuchelnikov/ObservableComputations
 * https://reactjs.org/
 * https://docs.racket-lang.org/frtime/
