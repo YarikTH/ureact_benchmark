@@ -24,6 +24,7 @@ Libraries to compare:
 * [zug](https://github.com/arximboldi/zug)
 * [lager](https://github.com/arximboldi/lager)
 * [sodium](https://github.com/SodiumFRP/sodium)
+* [KDBindings](https://github.com/KDAB/KDBindings)
 
 
 Additional foreign language libraries to see the contents and features:
