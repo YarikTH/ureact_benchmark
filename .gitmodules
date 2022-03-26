@@ -41,3 +41,6 @@
 [submodule "libs/tensorflow"]
 	path = libs/tensorflow
 	url = https://github.com/tensorflow/tensorflow
+[submodule "libs/nanobench"]
+	path = libs/nanobench
+	url = https://github.com/martinus/nanobench.git
